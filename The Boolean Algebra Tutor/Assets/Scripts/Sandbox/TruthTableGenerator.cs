@@ -1,11 +1,21 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class TruthTableGenerator : MonoBehaviour
 {
     private string truthTable;
     public GameObject truthTableString;
+
+    //References to TruthTables and their text elements
+    public GameObject truthTable2;
+    public GameObject[] text2 = new GameObject[4];
+    public GameObject truthTable3;
+    public GameObject[] text3 = new GameObject[8];
+    public GameObject truthTable4;
+    public GameObject[] text4 = new GameObject[16];
 
     public void GenerateTruthTable()
     {
@@ -13,6 +23,11 @@ public class TruthTableGenerator : MonoBehaviour
         GameObject[] switches = GameObject.FindGameObjectsWithTag("Switch");
         GameObject[] bulb = GameObject.FindGameObjectsWithTag("Bulb");
 
+        //Disable all truth tables to prevent overlapping 
+        truthTable2.SetActive(false);
+        truthTable3.SetActive(false);
+        truthTable4.SetActive(false);
+        
         //Validation
         if (bulb.Length != 1) //Truth table only supports 1 bulb 
         {
@@ -70,9 +85,54 @@ public class TruthTableGenerator : MonoBehaviour
                 truthTable += Convert.ToString(Convert.ToInt32(bulb[0].GetComponent<Bulb>().state)); //Add bulb's state to Truth Table
             }
 
-            truthTableString.GetComponent<Text>().text = truthTable;
+            if (switches.Length == 2)
+            {
+                FillTruthTable2();
+            }
+            else if (switches.Length == 3)
+            {
+                FillTruthTable3();
+            }
+            else if (switches.Length == 4)
+            {
+                FillTruthTable4();
+            }
+            else
+            {
+                truthTableString.GetComponent<Text>().text = truthTable;
+            }
+            
+
+
         }
 
 
+    }
+
+    public void FillTruthTable2()
+    {
+        truthTable2.SetActive(true);
+        for (int i=0; i < truthTable.Length; i++)
+        {
+            text2[i].GetComponent<TextMeshProUGUI>().text = Convert.ToString(truthTable[i]);
+        }
+    }
+
+    public void FillTruthTable3()
+    {
+        truthTable3.SetActive(true);
+        for (int i=0; i< truthTable.Length; i++)
+        {
+            text3[i].GetComponent<TextMeshProUGUI>().text = Convert.ToString(truthTable[i]);
+        }
+    }
+
+    public void FillTruthTable4()
+    {
+        truthTable4.SetActive(true);
+        for (int i = 0; i < truthTable.Length; i++)
+        {
+            text4[i].GetComponent<TextMeshProUGUI>().text = Convert.ToString(truthTable[i]);
+        }
     }
 }
