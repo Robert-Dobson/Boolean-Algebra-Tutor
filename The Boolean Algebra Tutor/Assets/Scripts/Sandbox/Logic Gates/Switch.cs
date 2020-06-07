@@ -45,6 +45,7 @@ public class Switch : MonoBehaviour
 
         if (Input.GetKeyDown("d")) //If user presses d whilst hovering over the switch destroy it
         {
+            outputNode.GetComponent<OutputNode>().DestroyWire();
             Destroy(gameObject);
             numOfSwitches -= 1;
         }

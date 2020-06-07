@@ -28,6 +28,10 @@ public class Wire : MonoBehaviour
                 connectedNode.GetComponent<InputNode>().isFixed = true;
                 GetComponent<EdgeCollider2D>().enabled = false;
                 fixedWire = true;
+
+                //Add reference to the output node to the input node so it can alert the output node if it's about to be deleted
+                connectedNode.GetComponent<InputNode>().connectedNode = outputNode;
+
             }  
         }
     }
@@ -35,6 +39,7 @@ public class Wire : MonoBehaviour
 
     private void Update()
     {
+        
         // If the wire is connected to another input node then make the wire always visually connect them 
         if (fixedWire)
         {
@@ -65,11 +70,17 @@ public class Wire : MonoBehaviour
 
     public void Destroy()
     {
-        // Set fixed wire to false, call OnFalse on the connected node and make wire invisible.
+        // Set fixed wire to false and make wire invisible.
         fixedWire = false;
-        connectedNode.GetComponent<InputNode>().isFixed = false;
-        connectedNode.GetComponent<InputNode>().OnFalse();
         GetComponent<LineRenderer>().enabled = false;
         GetComponent<EdgeCollider2D>().enabled = false;
+
+        //Remove references to the output node and also set fixed wire to false and call OnFals on the connected input node 
+        if (connectedNode != null)
+        {     
+            connectedNode.GetComponent<InputNode>().isFixed = false;
+            connectedNode.GetComponent<InputNode>().OnFalse();
+            connectedNode.GetComponent<InputNode>().connectedNode = null;
+        }
     }
 }

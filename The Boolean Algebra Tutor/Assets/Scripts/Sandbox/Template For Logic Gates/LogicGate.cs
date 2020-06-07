@@ -34,6 +34,23 @@ public class LogicGate : MonoBehaviour
     {
         if (Input.GetKeyDown("d")) //If user presses d whilst hovering over the logic gate destroy it
         {
+            // Remove any references to the game object by calling destroy on the input nodes.
+            
+            foreach (GameObject node in inputNodes)
+            {
+                if (node != null)
+                {
+                    node.GetComponent<InputNode>().Destroy();
+                }
+               
+            }
+
+            if (outputNode != null)
+            {
+                outputNode.GetComponent<OutputNode>().DestroyWire();
+            }
+            
+
             Destroy(gameObject);
         }
     }

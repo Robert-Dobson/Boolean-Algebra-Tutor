@@ -68,4 +68,11 @@ public class OutputNode : MonoBehaviour
             wire.GetComponent<Wire>().Destroy();
         }
     }
+
+    public void DestroyWire()
+    {
+        //Change fixed wire to false and call Destroy function on wire
+        fixedWire = false;
+        wire.GetComponent<Wire>().Destroy();
+    }
 }

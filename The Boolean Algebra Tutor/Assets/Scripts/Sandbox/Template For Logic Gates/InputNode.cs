@@ -4,6 +4,7 @@ public class InputNode : MonoBehaviour
 {
     public bool state = false;
     public bool isFixed = false;
+    public GameObject connectedNode;
 
     public void OnTrue()
     {
@@ -25,5 +26,15 @@ public class InputNode : MonoBehaviour
     {
         //Call OnFalse on first initialization to fix white logic gates bug
         OnFalse();
+    }
+
+    public void Destroy()
+    {
+        //Call destroy wire function on connected node 
+        if (connectedNode != null)
+        {
+            connectedNode.GetComponent<OutputNode>().DestroyWire();
+        }
+        
     }
 }
