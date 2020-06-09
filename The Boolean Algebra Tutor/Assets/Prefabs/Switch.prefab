@@ -97,12 +97,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa6147f87aff52443a311a4f5623b3e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 0
   outputNode: {fileID: 831991133981316191}
   letter: 
   spriteA: {fileID: 21300000, guid: 2fa4d47ab220fc642a215ded1b5e41c6, type: 3}
   spriteB: {fileID: 21300000, guid: 1fe01d24a7c92cb409718dcefe76e4fb, type: 3}
   spriteC: {fileID: 21300000, guid: 5e085054a04ee5d449ccff652337b594, type: 3}
   spriteD: {fileID: 21300000, guid: 0041ba234954b6a499791ee6a07ea323, type: 3}
+  errorMessage: {fileID: 1812616099720035123, guid: 8161c8620ba497747a6c35d5b3de381c,
+    type: 3}
 --- !u!114 &831991133750327234
 MonoBehaviour:
   m_ObjectHideFlags: 0

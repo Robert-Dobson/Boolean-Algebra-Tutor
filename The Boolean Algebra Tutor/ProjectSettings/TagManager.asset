@@ -7,6 +7,7 @@ TagManager:
   - InputNode
   - Switch
   - Bulb
+  - ErrorMessage
   layers:
   - Default
   - TransparentFX

@@ -27,11 +27,14 @@ public class TruthTableGenerator : MonoBehaviour
         truthTable2.SetActive(false);
         truthTable3.SetActive(false);
         truthTable4.SetActive(false);
+
+        //Reset information text so then error messages do not persist
+        truthTableString.GetComponent<Text>().text = "";
         
         //Validation
         if (bulb.Length != 1) //Truth table only supports 1 bulb 
         {
-            truthTableString.GetComponent<Text>().text = "Too many bulbs";
+            truthTableString.GetComponent<Text>().text = "There must only be 1 bulb";
         }
         else if (switches.Length <= 1 || switches.Length > 4) //Truth Table only supports 2-4 switches
         {
@@ -62,6 +65,13 @@ public class TruthTableGenerator : MonoBehaviour
                 }
             }
 
+            //Store an array representing all the orignal states of the switches so then we can keep their values
+            bool[] switchesStates = new bool [switches.Length];
+            for (int i=0; i < switches.Length; i++)
+            {
+                switchesStates[i] = switches[i].GetComponent<Switch>().state;
+            }
+
 
             for (int i=0; i < Math.Pow(2, switches.Length) ; i++)
             {
@@ -85,6 +95,20 @@ public class TruthTableGenerator : MonoBehaviour
                 truthTable += Convert.ToString(Convert.ToInt32(bulb[0].GetComponent<Bulb>().state)); //Add bulb's state to Truth Table
             }
 
+            //Restore orignal states of switches
+            for (int i = 0; i < switches.Length; i++)
+            {
+                if (switchesStates[i])
+                {
+                    switches[i].GetComponent<Switch>().OnTrue();
+                }
+                else
+                {
+                    switches[i].GetComponent<Switch>().OnFalse();
+                }
+            }
+
+            //Call correct fill truth table method depdning on number of switches
             if (switches.Length == 2)
             {
                 FillTruthTable2();

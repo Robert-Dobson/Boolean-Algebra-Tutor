@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,6 +15,10 @@ public class UIManager : MonoBehaviour
     public GameObject orGatePrefab;
     public GameObject notGatePrefab;
     public GameObject xorGatePrefab;
+
+    //Reference to camera
+    public GameObject mainCamera;
+
     public void LeftPanelView() //Called by Gates Button
     {
         if (leftPanel.activeSelf) //If left panel is visible
@@ -40,35 +45,57 @@ public class UIManager : MonoBehaviour
 
     }
 
-    //Methods below all add the logic gate which corresponds to each button in adding gates section.
+    //Methods below all add the logic gate in centre of screen which corresponds to each button in adding gates section.
     public void AddSwitch()
     {
-        Instantiate(switchPrefab);
+        SpawnLogicGate(switchPrefab);
     }
 
     public void AddBulb()
     {
-        Instantiate(bulbPrefab);
+        SpawnLogicGate(bulbPrefab);
     }
 
     public void AddANDGate()
     {
-        Instantiate(andGatePrefab);
+        SpawnLogicGate(andGatePrefab);
     }
 
     public void AddORGate()
     {
-        Instantiate(orGatePrefab);
+        SpawnLogicGate(orGatePrefab);
     }
 
     public void AddNOTGate()
     {
-        Instantiate(notGatePrefab);
+        SpawnLogicGate(notGatePrefab);
     }
 
     public void AddXORGate()
     {
-        Instantiate(xorGatePrefab);
+        SpawnLogicGate(xorGatePrefab);
     }
 
+    public void SpawnLogicGate(GameObject prefab)
+    {
+        Vector3 spawnLocation = mainCamera.transform.position;
+        spawnLocation.z = 0f;
+
+        //Ensure it doesn't instantiate on top of a logic gate.
+        while (true) //until the logic gate does not overlap another.
+        {
+            Collider2D colliders = Physics2D.OverlapCircle(spawnLocation, 2f); //Returns any nearby colliders within a radius of 2
+            if (colliders == null || spawnLocation.x >= 20f) //If there's no colliders nearby or if we are about to exit the game area.
+            {
+                break;
+            }
+            else
+            {
+                //Move the logic gate one unit to the right to prevent overlapping
+                spawnLocation.x += 1f;
+            }
+        }
+        // Instantiate the logic gate at spawn location.
+        Instantiate(prefab, spawnLocation, mainCamera.transform.rotation);
+    }
 }
