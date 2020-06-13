@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Vector3 = UnityEngine.Vector3;
 
 public class UIManager : MonoBehaviour
@@ -97,5 +98,10 @@ public class UIManager : MonoBehaviour
         }
         // Instantiate the logic gate at spawn location.
         Instantiate(prefab, spawnLocation, mainCamera.transform.rotation);
+    }
+
+    public void ReturnToSwitchboard()
+    {
+        SceneManager.LoadScene("Student Switchboard");
     }
 }

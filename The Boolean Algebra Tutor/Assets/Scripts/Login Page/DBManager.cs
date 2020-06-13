@@ -16,7 +16,7 @@ public class DBManager : MonoBehaviour
     }
 
 
-    public int CheckCredentials(string username, string password)
+    static public int CheckCredentials(string username, string password)
     {
         //Create SQL command to fetch any account ID which has the entered username and password.
         SQLiteDataReader dbDataReader;  
@@ -43,4 +43,42 @@ public class DBManager : MonoBehaviour
         databaseConnection.Close();
         return AccountID;
     }
+
+    static public void GetUserDetails(int accountID)
+    {
+        //Create SQL command to get all user details corresponding to the provided accountID.
+        SQLiteDataReader dbDataReader;
+        databaseCMD = databaseConnection.CreateCommand();
+        databaseCMD.CommandText =
+        @"
+            SELECT Username, FirstName, LastName, TypeOfAccount
+            FROM Accounts
+            WHERE AccountID = $accountID
+        ";
+        
+        //Add the provided account id as the accountID parameter (to protect against SQL injection)
+        databaseCMD.Parameters.AddWithValue("$accountID", accountID);
+        
+        //Declare the username, firstname, lastname, accounttype variables and give default values
+        string username = "";
+        string firstName = "";
+        string lastName = "";
+        int accountType = -1;
+
+        //Execute the SQL command on the database and assign the username, firstname, etc. to their corresponding variables.
+        databaseConnection.Open();
+        dbDataReader = databaseCMD.ExecuteReader();
+        while (dbDataReader.Read())
+        {
+            username = Convert.ToString(dbDataReader["Username"]);
+            firstName = Convert.ToString(dbDataReader["FirstName"]);
+            lastName = Convert.ToString(dbDataReader["LastName"]);
+            accountType = Convert.ToInt32(dbDataReader["TypeOfAccount"]);
+        }
+        dbDataReader.Close();
+        databaseConnection.Close();
+
+        //Update the user manager details with these new details
+        UserManager.UpdateUser(accountID, username, firstName, lastName, accountType);
+    } 
 }

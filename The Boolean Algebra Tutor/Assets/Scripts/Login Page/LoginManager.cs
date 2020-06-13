@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LoginManager : MonoBehaviour
 {
@@ -24,12 +25,12 @@ public class LoginManager : MonoBehaviour
         enteredPassword = Sha256(enteredPassword);
         
         //Get the associated accountID for these entered credentials (or -1 if the credentials is incorrect)
-        int accountID = GetComponent<DBManager>().CheckCredentials(enteredUsername, enteredPassword);
+        int accountID = DBManager.CheckCredentials(enteredUsername, enteredPassword);
         
         // If correct credentials then call CorrectCredentials() else call IncorrectCredentials()
         if (accountID != -1)
         {
-            CorrectCredentials();
+            CorrectCredentials(accountID);
         }
         else
         {
@@ -57,14 +58,26 @@ public class LoginManager : MonoBehaviour
         
     }
 
-    public void CorrectCredentials()
+    public void CorrectCredentials(int accountID)
     {
-        errorLabel.GetComponent<TextMeshProUGUI>().text = "Correct!";
+        //Update the user details on the UserManager class
+        DBManager.GetUserDetails(accountID);
+
+        //If the user is a student redirect them to the student switchboard,
+        //If the user is a teacher redirect them to the teacher switchboard.
+        if (UserManager.accountType == 0)
+        {
+            SceneManager.LoadScene("Student Switchboard");
+        }
+        else
+        {
+            SceneManager.LoadScene("Teacher Switchboard");
+        }
+        
     }
 
     public void IncorrectCredentials()
     {
         errorLabel.GetComponent<TextMeshProUGUI>().text = "Incorrect!";
-
     }
 }
