@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Data.SQLite;
 using System;
+using System.Security.Cryptography;
+using System.Text;
 
 public class DBManager : MonoBehaviour
 {
@@ -80,5 +82,50 @@ public class DBManager : MonoBehaviour
 
         //Update the user manager details with these new details
         UserManager.UpdateUser(accountID, username, firstName, lastName, accountType);
-    } 
+    }
+
+    static public string Sha256(string plainText)
+    {
+        //Create a hash
+        using (SHA256 hasher = SHA256.Create())
+        {
+            //Compute the hash, store as bytes
+            byte[] bytes = hasher.ComputeHash(Encoding.UTF8.GetBytes(plainText));
+
+            // Convert byte aray to a string
+            string hash = "";
+            foreach (byte aByte in bytes)
+            {
+                hash += aByte.ToString("x2");
+            }
+            return hash;
+        }
+
+    }
+
+    static public void CreateAccount(string firstName, string lastName, int accountType, string password)
+    {
+        //Create SQL command which creates a new record in the Accounts table
+        databaseCMD = databaseConnection.CreateCommand();
+        databaseCMD.CommandText =
+        @"
+            INSERT INTO Accounts 
+            (Username, Password, FirstName, LastName, TypeOfAccount)
+            VALUES 
+            ($username, $password, $firstName, $lastName, $typeOfAccount)
+        ";
+
+        //Assign the parameters to protect against SQL injection
+        databaseCMD.Parameters.AddWithValue("$username", firstName[0] + lastName);
+        databaseCMD.Parameters.AddWithValue("$password", password);
+        databaseCMD.Parameters.AddWithValue("$firstName", firstName);
+        databaseCMD.Parameters.AddWithValue("$lastName", lastName);
+        databaseCMD.Parameters.AddWithValue("$typeOfAccount", accountType);
+        
+        //Open database connection, execute command then close it
+        databaseConnection.Open();
+        databaseCMD.ExecuteNonQuery();
+        databaseConnection.Close();
+
+    }
 }

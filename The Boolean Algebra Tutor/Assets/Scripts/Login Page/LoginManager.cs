@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
+
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -22,7 +22,7 @@ public class LoginManager : MonoBehaviour
         string enteredPassword = passwordTextBox.GetComponent<TMP_InputField>().text;
 
         //Convert entered Password to hash for comparision in database
-        enteredPassword = Sha256(enteredPassword);
+        enteredPassword = DBManager.Sha256(enteredPassword);
         
         //Get the associated accountID for these entered credentials (or -1 if the credentials is incorrect)
         int accountID = DBManager.CheckCredentials(enteredUsername, enteredPassword);
@@ -39,24 +39,7 @@ public class LoginManager : MonoBehaviour
 
     }
 
-    public string Sha256(string plainText)
-    {
-        //Create a hash
-        using (SHA256 hasher = SHA256.Create())
-        {
-            //Compute the hash, store as bytes
-            byte[] bytes = hasher.ComputeHash(Encoding.UTF8.GetBytes(plainText));
-
-            // Convert byte aray to a string
-            string hash = "";
-            foreach (byte aByte in bytes)
-            {
-                hash += aByte.ToString("x2");
-            }
-            return hash;
-        }
-        
-    }
+    
 
     public void CorrectCredentials(int accountID)
     {
@@ -79,5 +62,10 @@ public class LoginManager : MonoBehaviour
     public void IncorrectCredentials()
     {
         errorLabel.GetComponent<TextMeshProUGUI>().text = "Incorrect!";
+    }
+
+    public void ToSignUp()
+    {
+        SceneManager.LoadScene("Sign up Screen");
     }
 }
