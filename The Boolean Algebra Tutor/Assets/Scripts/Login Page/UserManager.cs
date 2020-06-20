@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,14 +12,14 @@ public class UserManager : MonoBehaviour
     static public string lastName;
     static public int accountType; //0 if student, 1 if teacher
     
-    static public void UpdateUser(int newAccountID, string newUserName, string newFirstName, string newLastName, int newAccountType)
+    static public void UpdateUser(Tuple<int, string, string, string, int> userDetails)
     {
         //Update user details
-        accountID = newAccountID;
-        userName = newUserName;
-        firstName = newFirstName;
-        lastName = newLastName;
-        accountType = newAccountType;
+        accountID = userDetails.Item1;
+        userName = userDetails.Item2;
+        firstName = userDetails.Item3;
+        lastName = userDetails.Item4;
+        accountType = userDetails.Item5;
     }
     
 }

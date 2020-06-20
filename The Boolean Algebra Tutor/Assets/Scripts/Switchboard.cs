@@ -16,4 +16,10 @@ public class Switchboard : MonoBehaviour
         //Load up login screen
         SceneManager.LoadScene("Login Screen");
     }
+
+    public void ToModify()
+    {
+        //Load up Modify Account page
+        SceneManager.LoadScene("Modify Account");
+    }
 }

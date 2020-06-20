@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-
+using System;
 
 using TMPro;
 using UnityEngine;
@@ -43,8 +43,9 @@ public class LoginManager : MonoBehaviour
 
     public void CorrectCredentials(int accountID)
     {
-        //Update the user details on the UserManager class
-        DBManager.GetUserDetails(accountID);
+        //Get user details from database and update the UserManager class
+        Tuple<int, string, string, string, int> userDetails= DBManager.GetUserDetails(accountID);
+        UserManager.UpdateUser(userDetails);
 
         //If the user is a student redirect them to the student switchboard,
         //If the user is a teacher redirect them to the teacher switchboard.

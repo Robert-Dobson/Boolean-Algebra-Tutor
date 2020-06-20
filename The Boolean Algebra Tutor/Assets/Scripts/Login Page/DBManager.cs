@@ -13,7 +13,7 @@ public class DBManager : MonoBehaviour
     private void Start()
     {
         //Set connection string to location of database and create new SQLite connection to it
-        connectionString = "URI=file:" + Application.dataPath + "/BooleanAlgebraTutorDB.db; Version=3";
+        connectionString = "URI=file:" + Application.streamingAssetsPath + "/BooleanAlgebraTutorDB.db; Version=3";
         databaseConnection = new SQLiteConnection(connectionString);
     }
 
@@ -46,7 +46,7 @@ public class DBManager : MonoBehaviour
         return AccountID;
     }
 
-    static public void GetUserDetails(int accountID)
+    static public Tuple<int, string, string, string, int> GetUserDetails(int accountID)
     {
         //Create SQL command to get all user details corresponding to the provided accountID.
         SQLiteDataReader dbDataReader;
@@ -80,8 +80,8 @@ public class DBManager : MonoBehaviour
         dbDataReader.Close();
         databaseConnection.Close();
 
-        //Update the user manager details with these new details
-        UserManager.UpdateUser(accountID, username, firstName, lastName, accountType);
+        Tuple<int, string, string, string, int> userDetails = Tuple.Create<int, string, string, string, int>(accountID,username,firstName,lastName,accountType);
+        return userDetails;
     }
 
     static public string Sha256(string plainText)
@@ -127,5 +127,29 @@ public class DBManager : MonoBehaviour
         databaseCMD.ExecuteNonQuery();
         databaseConnection.Close();
 
+    }
+
+    static public void UpdateAccount(int accountID, string newFirstName, string newLastName, int newAccountType)
+    {
+        //Create SQL command which updates the record in the Accounts table for passed accountID
+        databaseCMD = databaseConnection.CreateCommand();
+        databaseCMD.CommandText =
+        @"
+            UPDATE Accounts
+            SET Username = $username, FirstName= $firstName, LastName= $lastName, TypeOfAccount= $typeOfAccount
+            WHERE AccountID = $accountID
+        ";
+
+        //Assign the parameters to protect against SQL injection
+        databaseCMD.Parameters.AddWithValue("$username", newFirstName[0] + newLastName);
+        databaseCMD.Parameters.AddWithValue("$firstName", newFirstName);
+        databaseCMD.Parameters.AddWithValue("$lastName", newLastName);
+        databaseCMD.Parameters.AddWithValue("$typeOfAccount", newAccountType);
+        databaseCMD.Parameters.AddWithValue("$accountID", accountID);
+
+        //Open database connection, execute command then close it
+        databaseConnection.Open();
+        databaseCMD.ExecuteNonQuery();
+        databaseConnection.Close();
     }
 }

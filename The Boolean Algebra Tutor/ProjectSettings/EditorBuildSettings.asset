@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Sign up Screen.unity
     guid: 823904d2565edfc428592a09df0469af
+  - enabled: 1
+    path: Assets/Scenes/Modify Account.unity
+    guid: c4d5226a3a6fe6b40978819042b9d24a
   m_configObjects: {}
