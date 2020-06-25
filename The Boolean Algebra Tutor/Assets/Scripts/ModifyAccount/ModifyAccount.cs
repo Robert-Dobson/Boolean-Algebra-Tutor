@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 public class ModifyAccount : MonoBehaviour
 {
     //References to textboxes, error labels and dropdown box
+    public GameObject usernameTextBox;
+    public GameObject usernameErrorLabel;
     public GameObject firstNameTextBox;
     public GameObject firstNameErrorLabel;
     public GameObject lastNameTextBox;
@@ -23,6 +25,7 @@ public class ModifyAccount : MonoBehaviour
     private void ShowAccountDetails()
     {
         //Show the current user details on the modify your account page
+        usernameTextBox.GetComponent<TMP_InputField>().text = UserManager.userName;
         firstNameTextBox.GetComponent<TMP_InputField>().text = UserManager.firstName;
         lastNameTextBox.GetComponent<TMP_InputField>().text = UserManager.lastName;
         typeAccountDropBox.GetComponent<TMP_Dropdown>().value = UserManager.accountType;
@@ -31,11 +34,31 @@ public class ModifyAccount : MonoBehaviour
     public void Modify()
     {
         //Hide all error labels
+        usernameErrorLabel.GetComponent<TextMeshProUGUI>().enabled = false;
         firstNameErrorLabel.GetComponent<TextMeshProUGUI>().enabled = false;
         lastNameErrorLabel.GetComponent<TextMeshProUGUI>().enabled = false;
 
         //ValidationError flag checks if any of the details failed their validation
         bool validationError = false;
+
+        //Get username, Length Check validation must be <=15 and Presence check
+        string username = usernameTextBox.GetComponent<TMP_InputField>().text;
+        if (username.Length > 15 || username.Length < 1)
+        {
+            validationError = true;
+            //Show username error message that username is invalid
+            usernameErrorLabel.GetComponent<TextMeshProUGUI>().text = "Invalid Username";
+            usernameErrorLabel.GetComponent<TextMeshProUGUI>().enabled = true;
+        }
+
+        // If username is already in the Accounts Table in the database tell user username is already used
+        else if (DBManager.UserExists(username))
+        {
+            validationError = true;
+            //Show username error message that username is already used
+            usernameErrorLabel.GetComponent<TextMeshProUGUI>().text = "Username already used";
+            usernameErrorLabel.GetComponent<TextMeshProUGUI>().enabled = true;
+        }
 
         //Get First Name, Length Check validation must be <=15 and Presence Check
         string firstName = firstNameTextBox.GetComponent<TMP_InputField>().text;
@@ -63,7 +86,7 @@ public class ModifyAccount : MonoBehaviour
         if (!validationError)
         {
             //Update the account details in database
-            DBManager.UpdateAccount(UserManager.accountID, firstName, lastName, accountType);
+            DBManager.UpdateAccount(UserManager.accountID, username, firstName, lastName, accountType);
 
             //Get new user details from database and update the UserManager class
             Tuple<int, string, string, string, int> userDetails = DBManager.GetUserDetails(UserManager.accountID);

@@ -103,7 +103,7 @@ public class DBManager : MonoBehaviour
 
     }
 
-    static public void CreateAccount(string firstName, string lastName, int accountType, string password)
+    static public void CreateAccount(string username, string firstName, string lastName, int accountType, string password)
     {
         //Create SQL command which creates a new record in the Accounts table
         databaseCMD = databaseConnection.CreateCommand();
@@ -116,7 +116,7 @@ public class DBManager : MonoBehaviour
         ";
 
         //Assign the parameters to protect against SQL injection
-        databaseCMD.Parameters.AddWithValue("$username", firstName[0] + lastName);
+        databaseCMD.Parameters.AddWithValue("$username", username);
         databaseCMD.Parameters.AddWithValue("$password", password);
         databaseCMD.Parameters.AddWithValue("$firstName", firstName);
         databaseCMD.Parameters.AddWithValue("$lastName", lastName);
@@ -129,7 +129,7 @@ public class DBManager : MonoBehaviour
 
     }
 
-    static public void UpdateAccount(int accountID, string newFirstName, string newLastName, int newAccountType)
+    static public void UpdateAccount(int accountID, string username, string newFirstName, string newLastName, int newAccountType)
     {
         //Create SQL command which updates the record in the Accounts table for passed accountID
         databaseCMD = databaseConnection.CreateCommand();
@@ -141,7 +141,7 @@ public class DBManager : MonoBehaviour
         ";
 
         //Assign the parameters to protect against SQL injection
-        databaseCMD.Parameters.AddWithValue("$username", newFirstName[0] + newLastName);
+        databaseCMD.Parameters.AddWithValue("$username", username);
         databaseCMD.Parameters.AddWithValue("$firstName", newFirstName);
         databaseCMD.Parameters.AddWithValue("$lastName", newLastName);
         databaseCMD.Parameters.AddWithValue("$typeOfAccount", newAccountType);
@@ -151,5 +151,36 @@ public class DBManager : MonoBehaviour
         databaseConnection.Open();
         databaseCMD.ExecuteNonQuery();
         databaseConnection.Close();
+    }
+
+    //Returns true if the username is already being used in a record in the Accounts Table
+    static public bool UserExists(string username)
+    {
+        //Create SQL Command which returns number of records that have the username given as argument
+        databaseCMD = databaseConnection.CreateCommand();
+        databaseCMD.CommandText =
+        @"
+            SELECT count(*)
+            FROM Accounts
+            WHERE Username = $username
+        ";
+
+        //Assign SQL paramter for the username to prevent SQL injection
+        databaseCMD.Parameters.AddWithValue("$username", username);
+
+        //Execute command and hold the number of records return
+        int numberOfRecords = 0;
+        databaseConnection.Open();
+        numberOfRecords = Convert.ToInt32(databaseCMD.ExecuteScalar());
+        databaseConnection.Close();
+        //If there's no records return false else return true.
+        if (numberOfRecords == 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }

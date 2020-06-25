@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 public class SignUpManager : MonoBehaviour
 {
     //References to textboxes, error labels and dropdown box
+    public GameObject usernameTextBox;
+    public GameObject usernameErrorLabel;
     public GameObject firstNameTextBox;
     public GameObject firstNameErrorLabel;
     public GameObject lastNameTextBox;
@@ -25,12 +27,32 @@ public class SignUpManager : MonoBehaviour
     public void Signup()
     {
         //Hide all error labels
+        usernameErrorLabel.GetComponent<TextMeshProUGUI>().enabled = false;
         firstNameErrorLabel.GetComponent<TextMeshProUGUI>().enabled = false;
         lastNameErrorLabel.GetComponent<TextMeshProUGUI>().enabled = false;
         passwordErrorLabel.GetComponent<TextMeshProUGUI>().enabled = false;
         
         //ValidationError flag checks if any of the details failed their validation
         bool validationError = false;
+
+        //Get username, Length Check validation must be <=15 and Presence check
+        string username = usernameTextBox.GetComponent<TMP_InputField>().text;
+        if (username.Length > 15 || username.Length < 1)
+        {
+            validationError = true;
+            //Show username error message that username is invalid
+            usernameErrorLabel.GetComponent<TextMeshProUGUI>().text = "Invalid Username";
+            usernameErrorLabel.GetComponent<TextMeshProUGUI>().enabled = true;
+        }
+        
+        // If username is already in the Accounts Table in the database tell user username is already used
+        else if (DBManager.UserExists(username))
+        {
+            validationError = true;
+            //Show username error message that username is already used
+            usernameErrorLabel.GetComponent<TextMeshProUGUI>().text = "Username already used";
+            usernameErrorLabel.GetComponent<TextMeshProUGUI>().enabled = true;
+        }
 
         //Get First Name, Length Check validation must be <=15 and Presence Check
         string firstName = firstNameTextBox.GetComponent<TMP_InputField>().text;
@@ -76,7 +98,7 @@ public class SignUpManager : MonoBehaviour
         if (!validationError)
         {
             // Call create account on DBManager
-            DBManager.CreateAccount(firstName, lastName, accountType, password);
+            DBManager.CreateAccount(username, firstName, lastName, accountType, password);
 
             //Return to login page
             SceneManager.LoadScene("Login Screen");
