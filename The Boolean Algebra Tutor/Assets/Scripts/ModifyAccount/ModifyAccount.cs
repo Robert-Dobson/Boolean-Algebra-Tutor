@@ -118,4 +118,18 @@ public class ModifyAccount : MonoBehaviour
             SceneManager.LoadScene("Teacher Switchboard"); //Load teacher switchboard
         }
     }
+
+    public void ToReset()
+    {
+        SceneManager.LoadScene("Reset Password");
+    }
+
+    public void DeleteAccount()
+    {
+        //Call DBManager DeleteAccount to delete the account off the database
+        DBManager.DeleteAccount(UserManager.accountID);
+
+        //Return user to login screen which in turn sign the user out.
+        SceneManager.LoadScene("Login Screen");
+    }
 }

@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Modify Account.unity
     guid: c4d5226a3a6fe6b40978819042b9d24a
+  - enabled: 1
+    path: Assets/Scenes/Reset Password.unity
+    guid: bb3f149d3b1c5a64a8dd085ebdf924e2
   m_configObjects: {}

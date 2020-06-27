@@ -3,6 +3,7 @@ using System.Data.SQLite;
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using UnityEngine.Video;
 
 public class DBManager : MonoBehaviour
 {
@@ -182,5 +183,46 @@ public class DBManager : MonoBehaviour
         {
             return true;
         }
+    }
+
+    public static void ResetPassword(int accountID, string password)
+    {
+        //Create SQL command which updates the password in the record in the Accounts table for passed accountID
+        databaseCMD = databaseConnection.CreateCommand();
+        databaseCMD.CommandText =
+        @"
+            UPDATE Accounts
+            SET Password = $password
+            WHERE AccountID = $accountID
+        ";
+
+        //Assign the parameters to protect against SQL injection
+        databaseCMD.Parameters.AddWithValue("$password", password);
+        databaseCMD.Parameters.AddWithValue("$accountID", accountID);
+
+        //Open database connection, execute command then close it
+        databaseConnection.Open();
+        databaseCMD.ExecuteNonQuery();
+        databaseConnection.Close();
+
+    }
+
+    public static void DeleteAccount(int accountID)
+    {
+        //Create an SQL statement which will delete the given account id's record from accounts table
+        databaseCMD = databaseConnection.CreateCommand();
+        databaseCMD.CommandText =
+        @"
+            DELETE FROM Accounts
+            WHERE AccountID = $accountID
+        ";
+
+        //Assign the parameters to protect against SQL injection
+        databaseCMD.Parameters.AddWithValue("$accountID", accountID);
+
+        //Open database connection, execute command then close it
+        databaseConnection.Open();
+        databaseCMD.ExecuteNonQuery();
+        databaseConnection.Close();
     }
 }
