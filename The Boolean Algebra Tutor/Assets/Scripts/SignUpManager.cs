@@ -13,7 +13,6 @@ public class SignUpManager : MonoBehaviour
     public GameObject firstNameErrorLabel;
     public GameObject lastNameTextBox;
     public GameObject lastNameErrorLabel;
-    public GameObject typeAccountDropBox;
     public GameObject password1TextBox;
     public GameObject password2TextBox;
     public GameObject passwordErrorLabel;
@@ -71,13 +70,8 @@ public class SignUpManager : MonoBehaviour
             //Show last name error message
             lastNameErrorLabel.GetComponent<TextMeshProUGUI>().enabled = true;
         }
-
-        //Get Type of Account, the drop down box already has validation by limiting
-        //The possible inputs to Student or Teacher so not needed here.
-        //If student then account type boolean is 0, if teacher it is 1.
-        int accountType = typeAccountDropBox.GetComponent<TMP_Dropdown>().value;
        
-        //Get passwords and check if they match otherwise hash it.
+        //Get passwords and check if they match otherwise check strength and hash
         string password = "";
         string password1 = password1TextBox.GetComponent<TMP_InputField>().text;
         string password2 = password2TextBox.GetComponent<TMP_InputField>().text;
@@ -85,20 +79,32 @@ public class SignUpManager : MonoBehaviour
         {
             validationError = true;
             //Show passwords do not match error message
+            passwordErrorLabel.GetComponent<TextMeshProUGUI>().text = "Passwords do not match!";
             passwordErrorLabel.GetComponent<TextMeshProUGUI>().enabled = true;
         }
         else
         {
-
-            //Hash it
-            password = DBManager.Sha256(password1);
+            //If password is fits the security validation (detialed in method)
+            if (DBManager.CheckPasswordStrength(password1))
+            {
+                //Hash it
+                password = DBManager.Sha256(password1);
+            }
+            else
+            {
+                validationError = true;
+                //Show password is insecure enough error message
+                passwordErrorLabel.GetComponent<TextMeshProUGUI>().text = "Password is insecure!";
+                passwordErrorLabel.GetComponent<TextMeshProUGUI>().enabled = true;
+            }
+            
         }
 
         //If there is not a validation error create account
         if (!validationError)
         {
             // Call create account on DBManager
-            DBManager.CreateAccount(username, firstName, lastName, accountType, password);
+            DBManager.CreateAccount(username, firstName, lastName, password);
 
             //Return to login page
             SceneManager.LoadScene("Login Screen");

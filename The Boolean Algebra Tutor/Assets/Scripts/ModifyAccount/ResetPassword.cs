@@ -36,6 +36,14 @@ public class ResetPassword : MonoBehaviour
             passwordErrorMessage.GetComponent<TextMeshProUGUI>().enabled = true;
             
         }
+
+        //If password does not fit the security validation (detialed in method)
+        else if (!(DBManager.CheckPasswordStrength(password1)))
+        { 
+            //Show password is insecure enough error message
+            passwordErrorMessage.GetComponent<TextMeshProUGUI>().text = "Password is insecure!";
+            passwordErrorMessage.GetComponent<TextMeshProUGUI>().enabled = true;
+        }
         else
         {
             //Hash the entered password for database 

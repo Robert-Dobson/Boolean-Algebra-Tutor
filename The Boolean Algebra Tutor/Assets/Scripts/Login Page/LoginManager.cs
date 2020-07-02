@@ -44,20 +44,11 @@ public class LoginManager : MonoBehaviour
     public void CorrectCredentials(int accountID)
     {
         //Get user details from database and update the UserManager class
-        Tuple<int, string, string, string, int> userDetails= DBManager.GetUserDetails(accountID);
+        Tuple<int, string, string, string> userDetails= DBManager.GetUserDetails(accountID);
         UserManager.UpdateUser(userDetails);
 
-        //If the user is a student redirect them to the student switchboard,
-        //If the user is a teacher redirect them to the teacher switchboard.
-        if (UserManager.accountType == 0)
-        {
-            SceneManager.LoadScene("Student Switchboard");
-        }
-        else
-        {
-            SceneManager.LoadScene("Teacher Switchboard");
-        }
-        
+        //Redirect to switchboard
+        SceneManager.LoadScene("Switchboard");
     }
 
     public void IncorrectCredentials()

@@ -14,7 +14,6 @@ public class ModifyAccount : MonoBehaviour
     public GameObject firstNameErrorLabel;
     public GameObject lastNameTextBox;
     public GameObject lastNameErrorLabel;
-    public GameObject typeAccountDropBox;
     public GameObject successMessage;
 
     private void Start()
@@ -28,7 +27,6 @@ public class ModifyAccount : MonoBehaviour
         usernameTextBox.GetComponent<TMP_InputField>().text = UserManager.userName;
         firstNameTextBox.GetComponent<TMP_InputField>().text = UserManager.firstName;
         lastNameTextBox.GetComponent<TMP_InputField>().text = UserManager.lastName;
-        typeAccountDropBox.GetComponent<TMP_Dropdown>().value = UserManager.accountType;
     }
 
     public void Modify()
@@ -52,7 +50,7 @@ public class ModifyAccount : MonoBehaviour
         }
 
         // If username is already in the Accounts Table in the database tell user username is already used
-        else if (DBManager.UserExists(username))
+        else if (DBManager.UserExists(username) && !(username == UserManager.userName)) 
         {
             validationError = true;
             //Show username error message that username is already used
@@ -78,18 +76,13 @@ public class ModifyAccount : MonoBehaviour
             lastNameErrorLabel.GetComponent<TextMeshProUGUI>().enabled = true;
         }
 
-        //Get Type of Account, the drop down box already has validation by limiting
-        //The possible inputs to Student or Teacher so not needed here.
-        //If student then account type boolean is 0, if teacher it is 1.
-        int accountType = typeAccountDropBox.GetComponent<TMP_Dropdown>().value;
-
         if (!validationError)
         {
             //Update the account details in database
-            DBManager.UpdateAccount(UserManager.accountID, username, firstName, lastName, accountType);
+            DBManager.UpdateAccount(UserManager.accountID, username, firstName, lastName);
 
             //Get new user details from database and update the UserManager class
-            Tuple<int, string, string, string, int> userDetails = DBManager.GetUserDetails(UserManager.accountID);
+            Tuple<int, string, string, string> userDetails = DBManager.GetUserDetails(UserManager.accountID);
             UserManager.UpdateUser(userDetails);
 
             //Update fields with new user details
@@ -109,14 +102,8 @@ public class ModifyAccount : MonoBehaviour
 
     public void ToSwitchboard()
     {
-        if (UserManager.accountType == 0) //If user is a student
-        {
-            SceneManager.LoadScene("Student Switchboard"); //Load student switchboard
-        }
-        else //If user is a teacher
-        {
-            SceneManager.LoadScene("Teacher Switchboard"); //Load teacher switchboard
-        }
+        //Load Switchboard
+        SceneManager.LoadScene("Switchboard"); 
     }
 
     public void ToReset()

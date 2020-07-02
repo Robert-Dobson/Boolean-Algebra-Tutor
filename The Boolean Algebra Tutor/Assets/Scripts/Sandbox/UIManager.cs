@@ -102,6 +102,6 @@ public class UIManager : MonoBehaviour
 
     public void ReturnToSwitchboard()
     {
-        SceneManager.LoadScene("Student Switchboard");
+        SceneManager.LoadScene("Switchboard");
     }
 }

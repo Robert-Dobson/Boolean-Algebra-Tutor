@@ -4,6 +4,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using UnityEngine.Video;
+using System.Text.RegularExpressions;
 
 public class DBManager : MonoBehaviour
 {
@@ -47,14 +48,14 @@ public class DBManager : MonoBehaviour
         return AccountID;
     }
 
-    static public Tuple<int, string, string, string, int> GetUserDetails(int accountID)
+    static public Tuple<int, string, string, string> GetUserDetails(int accountID)
     {
         //Create SQL command to get all user details corresponding to the provided accountID.
         SQLiteDataReader dbDataReader;
         databaseCMD = databaseConnection.CreateCommand();
         databaseCMD.CommandText =
         @"
-            SELECT Username, FirstName, LastName, TypeOfAccount
+            SELECT Username, FirstName, LastName
             FROM Accounts
             WHERE AccountID = $accountID
         ";
@@ -62,11 +63,10 @@ public class DBManager : MonoBehaviour
         //Add the provided account id as the accountID parameter (to protect against SQL injection)
         databaseCMD.Parameters.AddWithValue("$accountID", accountID);
         
-        //Declare the username, firstname, lastname, accounttype variables and give default values
+        //Declare the username, firstname and last name variables and give default values
         string username = "";
         string firstName = "";
         string lastName = "";
-        int accountType = -1;
 
         //Execute the SQL command on the database and assign the username, firstname, etc. to their corresponding variables.
         databaseConnection.Open();
@@ -76,12 +76,11 @@ public class DBManager : MonoBehaviour
             username = Convert.ToString(dbDataReader["Username"]);
             firstName = Convert.ToString(dbDataReader["FirstName"]);
             lastName = Convert.ToString(dbDataReader["LastName"]);
-            accountType = Convert.ToInt32(dbDataReader["TypeOfAccount"]);
         }
         dbDataReader.Close();
         databaseConnection.Close();
 
-        Tuple<int, string, string, string, int> userDetails = Tuple.Create<int, string, string, string, int>(accountID,username,firstName,lastName,accountType);
+        Tuple<int, string, string, string> userDetails = Tuple.Create<int, string, string, string>(accountID,username,firstName,lastName);
         return userDetails;
     }
 
@@ -104,16 +103,34 @@ public class DBManager : MonoBehaviour
 
     }
 
-    static public void CreateAccount(string username, string firstName, string lastName, int accountType, string password)
+    static public bool CheckPasswordStrength(string password)
+    {
+        //Regex pattern that checks is password is 8 characters long, contain both upper and lower case letters, numbers and special characters. 
+        string validationPattern = @"((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!-/]|.*[:-@]|.*[\[-`]|.*[\{-~]).{8,})";
+        
+        //If password matches this regex pattern then return true (password is secure) else return false
+        if(Regex.Match(password, validationPattern).Success)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        
+
+    }
+
+    static public void CreateAccount(string username, string firstName, string lastName, string password)
     {
         //Create SQL command which creates a new record in the Accounts table
         databaseCMD = databaseConnection.CreateCommand();
         databaseCMD.CommandText =
         @"
             INSERT INTO Accounts 
-            (Username, Password, FirstName, LastName, TypeOfAccount)
+            (Username, Password, FirstName, LastName)
             VALUES 
-            ($username, $password, $firstName, $lastName, $typeOfAccount)
+            ($username, $password, $firstName, $lastName)
         ";
 
         //Assign the parameters to protect against SQL injection
@@ -121,7 +138,6 @@ public class DBManager : MonoBehaviour
         databaseCMD.Parameters.AddWithValue("$password", password);
         databaseCMD.Parameters.AddWithValue("$firstName", firstName);
         databaseCMD.Parameters.AddWithValue("$lastName", lastName);
-        databaseCMD.Parameters.AddWithValue("$typeOfAccount", accountType);
         
         //Open database connection, execute command then close it
         databaseConnection.Open();
@@ -130,14 +146,14 @@ public class DBManager : MonoBehaviour
 
     }
 
-    static public void UpdateAccount(int accountID, string username, string newFirstName, string newLastName, int newAccountType)
+    static public void UpdateAccount(int accountID, string username, string newFirstName, string newLastName)
     {
         //Create SQL command which updates the record in the Accounts table for passed accountID
         databaseCMD = databaseConnection.CreateCommand();
         databaseCMD.CommandText =
         @"
             UPDATE Accounts
-            SET Username = $username, FirstName= $firstName, LastName= $lastName, TypeOfAccount= $typeOfAccount
+            SET Username = $username, FirstName= $firstName, LastName= $lastName
             WHERE AccountID = $accountID
         ";
 
@@ -145,7 +161,6 @@ public class DBManager : MonoBehaviour
         databaseCMD.Parameters.AddWithValue("$username", username);
         databaseCMD.Parameters.AddWithValue("$firstName", newFirstName);
         databaseCMD.Parameters.AddWithValue("$lastName", newLastName);
-        databaseCMD.Parameters.AddWithValue("$typeOfAccount", newAccountType);
         databaseCMD.Parameters.AddWithValue("$accountID", accountID);
 
         //Open database connection, execute command then close it
