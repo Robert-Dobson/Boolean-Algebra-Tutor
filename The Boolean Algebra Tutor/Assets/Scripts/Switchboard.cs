@@ -22,4 +22,10 @@ public class Switchboard : MonoBehaviour
         //Load up Modify Account page
         SceneManager.LoadScene("Modify Account");
     }
+
+    public void ToCreate()
+    {
+        //Load up create setup page
+        SceneManager.LoadScene("Create Setup");
+    }
 }

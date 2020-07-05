@@ -240,4 +240,31 @@ public class DBManager : MonoBehaviour
         databaseCMD.ExecuteNonQuery();
         databaseConnection.Close();
     }
+
+    public static void CreateQuestion(string name, string description, int difficulty, string question, string answer, int creator)
+    {
+        //Create SQL command which creates a new record in the Questions table
+        databaseCMD = databaseConnection.CreateCommand();
+        databaseCMD.CommandText =
+        @"
+            INSERT INTO Questions 
+            (Name, Description, Difficulty, Question, Answer, Creator)
+            VALUES 
+            ($name, $description, $difficulty, $question, $answer, $creator)
+        ";
+
+        //Assign the parameters to protect against SQL injection
+        databaseCMD.Parameters.AddWithValue("$name", name);
+        databaseCMD.Parameters.AddWithValue("$description", description);
+        databaseCMD.Parameters.AddWithValue("$difficulty", difficulty);
+        databaseCMD.Parameters.AddWithValue("$question", question);
+        databaseCMD.Parameters.AddWithValue("$answer", answer);
+        databaseCMD.Parameters.AddWithValue("$creator", creator);
+
+        //Open database connection, execute command then close it
+        databaseConnection.Open();
+        databaseCMD.ExecuteNonQuery();
+        databaseConnection.Close();
+    }
+    
 }

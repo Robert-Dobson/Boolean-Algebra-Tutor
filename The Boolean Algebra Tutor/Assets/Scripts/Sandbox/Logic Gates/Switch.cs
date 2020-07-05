@@ -7,7 +7,7 @@ public class Switch : MonoBehaviour
 {
     public bool state;
     public GameObject outputNode;
-    static int numOfSwitches = 0;
+    public static int numOfSwitches = 0;
     public string letter;
 
     //Sprites for each possible switch

@@ -1,6 +1,7 @@
 ﻿using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
@@ -17,28 +18,34 @@ public class TruthTableGenerator : MonoBehaviour
     public GameObject truthTable4;
     public GameObject[] text4 = new GameObject[16];
 
+    //Reference to the create question manager (for create question sandbox)
+    public GameObject createQuestionManager;
+
     public void GenerateTruthTable()
     {
         //Get all switch game objects and bulb game objects and assign to an array
         GameObject[] switches = GameObject.FindGameObjectsWithTag("Switch");
         GameObject[] bulb = GameObject.FindGameObjectsWithTag("Bulb");
 
-        //Disable all truth tables to prevent overlapping 
-        truthTable2.SetActive(false);
-        truthTable3.SetActive(false);
-        truthTable4.SetActive(false);
+        if (SceneManager.GetActiveScene().name == "Sandbox")
+        {
+            //Disable all truth tables to prevent overlapping 
+            truthTable2.SetActive(false);
+            truthTable3.SetActive(false);
+            truthTable4.SetActive(false);
+        }
 
         //Reset information text so then error messages do not persist
-        truthTableString.GetComponent<Text>().text = "";
+        truthTableString.GetComponent<TextMeshProUGUI>().text = "";
         
         //Validation
         if (bulb.Length != 1) //Truth table only supports 1 bulb 
         {
-            truthTableString.GetComponent<Text>().text = "There must only be 1 bulb";
+            truthTableString.GetComponent<TextMeshProUGUI>().text = "There must only be 1 bulb";
         }
         else if (switches.Length <= 1 || switches.Length > 4) //Truth Table only supports 2-4 switches
         {
-            truthTableString.GetComponent<Text>().text = "There must only be 2 to 4 switches";
+            truthTableString.GetComponent<TextMeshProUGUI>().text = "There must only be 2 to 4 switches";
         }
         else
         {
@@ -108,26 +115,32 @@ public class TruthTableGenerator : MonoBehaviour
                 }
             }
 
-            //Call correct fill truth table method depdning on number of switches
-            if (switches.Length == 2)
+            //Call correct fill truth table method depending on number of switches (if on normal sandbox)
+            if (SceneManager.GetActiveScene().name == "Sandbox")
             {
-                FillTruthTable2();
+                if (switches.Length == 2)
+                {
+                    FillTruthTable2();
+                }
+                else if (switches.Length == 3)
+                {
+                    FillTruthTable3();
+                }
+                else if (switches.Length == 4)
+                {
+                    FillTruthTable4();
+                }
+                else
+                {
+                    truthTableString.GetComponent<TextMeshProUGUI>().text = truthTable;
+                }
             }
-            else if (switches.Length == 3)
-            {
-                FillTruthTable3();
-            }
-            else if (switches.Length == 4)
-            {
-                FillTruthTable4();
-            }
-            else
-            {
-                truthTableString.GetComponent<Text>().text = truthTable;
-            }
-            
 
-
+            //If on create question sandbox instead call the prepare submission method on the create questions class.
+            else if (SceneManager.GetActiveScene().name == "Create Question")
+            {
+                createQuestionManager.GetComponent<CreateQuestion>().PrepareSubmission(truthTable);
+            }
         }
 
 

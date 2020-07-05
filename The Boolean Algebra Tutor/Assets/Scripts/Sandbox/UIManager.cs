@@ -104,4 +104,10 @@ public class UIManager : MonoBehaviour
     {
         SceneManager.LoadScene("Switchboard");
     }
+
+    //Reset number of switches as soon as the sandbox starts
+    public void Awake()
+    {
+        Switch.numOfSwitches = 0;
+    }
 }
