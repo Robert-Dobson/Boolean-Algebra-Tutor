@@ -28,4 +28,9 @@ public class Switchboard : MonoBehaviour
         //Load up create setup page
         SceneManager.LoadScene("Create Setup");
     }
+
+    public void ToQuestions()
+    {
+        SceneManager.LoadScene("Select Question");
+    }
 }

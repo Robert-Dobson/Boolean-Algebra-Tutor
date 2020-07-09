@@ -29,4 +29,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Create Setup.unity
     guid: a0ed1d1af19e1c246a64f124f0badeb9
+  - enabled: 1
+    path: Assets/Scenes/Select Question.unity
+    guid: e3668094649498943878750315e56f28
+  - enabled: 1
+    path: Assets/Scenes/Answer Question.unity
+    guid: 5e7ed90490a40844b8395e071a46e428
   m_configObjects: {}

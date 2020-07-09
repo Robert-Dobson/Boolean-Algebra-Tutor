@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using UnityEngine.Video;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 public class DBManager : MonoBehaviour
 {
@@ -266,5 +267,41 @@ public class DBManager : MonoBehaviour
         databaseCMD.ExecuteNonQuery();
         databaseConnection.Close();
     }
+
+    public static List<Tuple<int, string, string, int, string, string>> GetQuestions() 
+    {
+        //Create SQL command to get all questions in Questions table.
+        SQLiteDataReader dbDataReader;
+        databaseCMD = databaseConnection.CreateCommand();
+        databaseCMD.CommandText =
+        @"
+            SELECT QuestionID, Name, Description, Difficulty, Question, Answer
+            FROM Questions
+        ";
+
+        //Declare the list of questions tuples
+        List<Tuple<int, string, string, int, string, string>> questions = new List<Tuple<int, string, string, int, string, string>>();
+
+
+        //Execute the SQL command on the database and assign the username, firstname, etc. to their corresponding variables.
+        databaseConnection.Open();
+        dbDataReader = databaseCMD.ExecuteReader();
+        while (dbDataReader.Read())
+        {
+            int QuestionID = Convert.ToInt32(dbDataReader["QuestionID"]);
+            string name = Convert.ToString(dbDataReader["Name"]);
+            string description = Convert.ToString(dbDataReader["Description"]);
+            int difficulty = Convert.ToInt32(dbDataReader["Difficulty"]);
+            string question = Convert.ToString(dbDataReader["Question"]);
+            string answer = Convert.ToString(dbDataReader["Answer"]);
+            questions.Add(Tuple.Create<int, string, string, int, string, string> (QuestionID, name, description, difficulty, question, answer));
+        }
+
+        //Close data reader and database connection and return list of questions
+        dbDataReader.Close();
+        databaseConnection.Close();
+        return questions;
+    }
+
     
 }

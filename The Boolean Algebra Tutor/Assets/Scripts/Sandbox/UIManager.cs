@@ -110,4 +110,9 @@ public class UIManager : MonoBehaviour
     {
         Switch.numOfSwitches = 0;
     }
+
+    public void ReturnToQuestionSelect()
+    {
+        SceneManager.LoadScene("Select Question");
+    }
 }
