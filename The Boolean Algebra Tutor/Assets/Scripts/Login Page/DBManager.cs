@@ -303,5 +303,29 @@ public class DBManager : MonoBehaviour
         return questions;
     }
 
+    public static void SubmitQuestionScore(int questionID, int accountID, int score, int maxScore)
+    {
+        //Create SQL command which creates a new record in the QuestionScores table
+        databaseCMD = databaseConnection.CreateCommand();
+        databaseCMD.CommandText =
+        @"
+            INSERT INTO QuestionsScores 
+            (Question, Account, Score, MaxScore)
+            VALUES 
+            ($questionID, $accountID, $score, $maxScore)
+        ";
+
+        //Assign the parameters to protect against SQL injection
+        databaseCMD.Parameters.AddWithValue("$questionID", questionID);
+        databaseCMD.Parameters.AddWithValue("$accountID", accountID);
+        databaseCMD.Parameters.AddWithValue("$score", score);
+        databaseCMD.Parameters.AddWithValue("$maxScore", maxScore);
+
+        //Open database connection, execute command then close it
+        databaseConnection.Open();
+        databaseCMD.ExecuteNonQuery();
+        databaseConnection.Close();
+    }
+
     
 }

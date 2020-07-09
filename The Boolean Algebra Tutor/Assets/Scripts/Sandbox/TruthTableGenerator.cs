@@ -21,6 +21,9 @@ public class TruthTableGenerator : MonoBehaviour
     //Reference to the create question manager (for create question sandbox)
     public GameObject createQuestionManager;
 
+    //Reference to the question manager (for answering question sandbox)
+    public GameObject questionManager;
+
     public void GenerateTruthTable()
     {
         //Get all switch game objects and bulb game objects and assign to an array
@@ -140,6 +143,12 @@ public class TruthTableGenerator : MonoBehaviour
             else if (SceneManager.GetActiveScene().name == "Create Question")
             {
                 createQuestionManager.GetComponent<CreateQuestion>().PrepareSubmission(truthTable);
+            }
+
+            //If on answer question instead call the show confirmation method on the Question class.
+            else if(SceneManager.GetActiveScene().name == "Answer Question")
+            {
+                questionManager.GetComponent<Question>().Confirm(truthTable);
             }
         }
 
