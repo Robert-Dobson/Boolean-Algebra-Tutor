@@ -33,4 +33,9 @@ public class Switchboard : MonoBehaviour
     {
         SceneManager.LoadScene("Select Question");
     }
+
+    public void ToNotes()
+    {
+        SceneManager.LoadScene("Notes");
+    }
 }
