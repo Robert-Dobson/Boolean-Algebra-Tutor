@@ -327,5 +327,33 @@ public class DBManager : MonoBehaviour
         databaseConnection.Close();
     }
 
-    
+    static public string GetQuestionScore(int accountID, int questionID)
+    {
+        //Create SQL command to select any records with the passed accountID and questionID
+        SQLiteDataReader dbDataReader;
+        databaseCMD = databaseConnection.CreateCommand();
+        databaseCMD.CommandText =
+        @"
+            SELECT  Score,MaxScore
+            FROM QuestionsScores
+            WHERE Account= $accountID and Question= $questionID 
+        ";
+        // Set username and password parameters (to protect against SQL injection) to username and password entered
+        databaseCMD.Parameters.AddWithValue("$accountID", accountID);
+        databaseCMD.Parameters.AddWithValue("$questionID", questionID);
+        string score = "-1"; //Default -1 for when no records are found.
+
+        //Open Database connection and execute the SQL command then close the connection
+        databaseConnection.Open();
+        dbDataReader = databaseCMD.ExecuteReader();
+        while (dbDataReader.Read()) //Every iteration is for each record found
+        {
+            score = Convert.ToString(dbDataReader["Score"]) + "/" + dbDataReader["MaxScore"];
+        }
+        dbDataReader.Close();
+        databaseConnection.Close();
+        return score;
+    }
+
+
 }
