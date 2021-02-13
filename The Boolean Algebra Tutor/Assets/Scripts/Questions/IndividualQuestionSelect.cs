@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using TMPro;
 using UnityEngine;
-using System;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -21,7 +19,7 @@ public class IndividualQuestionSelect : MonoBehaviour
     private int difficulty;
     private string question;
     private string answer;
-    
+
     public void UpdateQuestion(Tuple<int, string, string, int, string, string> details)
     {
         //Update question details stored in variables
@@ -71,6 +69,6 @@ public class IndividualQuestionSelect : MonoBehaviour
         //Load the answering questions sandbox
         SceneManager.LoadScene("Answer Question");
     }
-   
-   
+
+
 }

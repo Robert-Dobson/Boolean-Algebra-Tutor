@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -30,7 +28,7 @@ public class SignUpManager : MonoBehaviour
         firstNameErrorLabel.GetComponent<TextMeshProUGUI>().enabled = false;
         lastNameErrorLabel.GetComponent<TextMeshProUGUI>().enabled = false;
         passwordErrorLabel.GetComponent<TextMeshProUGUI>().enabled = false;
-        
+
         //ValidationError flag checks if any of the details failed their validation
         bool validationError = false;
 
@@ -43,7 +41,7 @@ public class SignUpManager : MonoBehaviour
             usernameErrorLabel.GetComponent<TextMeshProUGUI>().text = "Invalid Username";
             usernameErrorLabel.GetComponent<TextMeshProUGUI>().enabled = true;
         }
-        
+
         // If username is already in the Accounts Table in the database tell user username is already used
         else if (DBManager.UserExists(username))
         {
@@ -70,7 +68,7 @@ public class SignUpManager : MonoBehaviour
             //Show last name error message
             lastNameErrorLabel.GetComponent<TextMeshProUGUI>().enabled = true;
         }
-       
+
         //Get passwords and check if they match otherwise check strength and hash
         string password = "";
         string password1 = password1TextBox.GetComponent<TMP_InputField>().text;
@@ -97,7 +95,7 @@ public class SignUpManager : MonoBehaviour
                 passwordErrorLabel.GetComponent<TextMeshProUGUI>().text = "Password is insecure!";
                 passwordErrorLabel.GetComponent<TextMeshProUGUI>().enabled = true;
             }
-            
+
         }
 
         //If there is not a validation error create account
@@ -111,6 +109,6 @@ public class SignUpManager : MonoBehaviour
         }
 
     }
-    
-    
+
+
 }

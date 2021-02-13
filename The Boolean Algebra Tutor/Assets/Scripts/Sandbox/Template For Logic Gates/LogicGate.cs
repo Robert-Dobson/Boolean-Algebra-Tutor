@@ -21,7 +21,7 @@ public class LogicGate : MonoBehaviour
     public virtual void OnChange()
     {
         //This method should be overidded in child classes
-        Debug.Log("You forgot to overide OnChange()!"); 
+        Debug.Log("You forgot to overide OnChange()!");
     }
 
     public void Start()
@@ -35,21 +35,21 @@ public class LogicGate : MonoBehaviour
         if (Input.GetKeyDown("d")) //If user presses d whilst hovering over the logic gate destroy it
         {
             // Remove any references to the game object by calling destroy on the input nodes.
-            
+
             foreach (GameObject node in inputNodes)
             {
                 if (node != null)
                 {
                     node.GetComponent<InputNode>().Destroy();
                 }
-               
+
             }
 
             if (outputNode != null)
             {
                 outputNode.GetComponent<OutputNode>().DestroyWire();
             }
-            
+
 
             Destroy(gameObject);
         }

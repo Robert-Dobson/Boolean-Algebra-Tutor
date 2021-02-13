@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UserManager : MonoBehaviour
@@ -10,7 +8,7 @@ public class UserManager : MonoBehaviour
     static public string userName;
     static public string firstName;
     static public string lastName;
-    
+
     static public void UpdateUser(Tuple<int, string, string, string> userDetails)
     {
         //Update user details
@@ -19,5 +17,5 @@ public class UserManager : MonoBehaviour
         firstName = userDetails.Item3;
         lastName = userDetails.Item4;
     }
-    
+
 }

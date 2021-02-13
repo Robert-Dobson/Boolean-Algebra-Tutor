@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Switchboard : MonoBehaviour
 {
-   public void ToSandbox()
-   {
+    public void ToSandbox()
+    {
         //Load up sandbox
         SceneManager.LoadScene("Sandbox");
     }

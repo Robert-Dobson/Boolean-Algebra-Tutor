@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using Vector3 = UnityEngine.Vector3;
 
@@ -16,6 +15,7 @@ public class UIManager : MonoBehaviour
     public GameObject orGatePrefab;
     public GameObject notGatePrefab;
     public GameObject xorGatePrefab;
+    public GameObject oneToTwoGatePrefab;
 
     //Reference to camera
     public GameObject mainCamera;
@@ -30,7 +30,7 @@ public class UIManager : MonoBehaviour
         {
             leftPanel.SetActive(true); //Make left panel visible
         }
-        
+
     }
 
     public void RightPanelView() //Called by Truth Table Button
@@ -75,6 +75,11 @@ public class UIManager : MonoBehaviour
     public void AddXORGate()
     {
         SpawnLogicGate(xorGatePrefab);
+    }
+
+    public void AddOneToTwoGate()
+    {
+        SpawnLogicGate(oneToTwoGatePrefab);
     }
 
     public void SpawnLogicGate(GameObject prefab)

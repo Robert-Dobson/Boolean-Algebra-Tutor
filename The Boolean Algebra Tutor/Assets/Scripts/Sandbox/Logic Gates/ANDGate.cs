@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class ANDGate : LogicGate
+﻿public class ANDGate : LogicGate
 {
     public override void OnChange()
     {

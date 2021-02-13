@@ -6,7 +6,7 @@ public class Bulb : LogicGate
     {
         // Make state false and sprite green
         state = true;
-        GetComponent<SpriteRenderer>().color = Color.green; 
+        GetComponent<SpriteRenderer>().color = Color.green;
     }
 
     public override void OnFalse()
@@ -30,5 +30,5 @@ public class Bulb : LogicGate
         }
     }
 
-    
+
 }

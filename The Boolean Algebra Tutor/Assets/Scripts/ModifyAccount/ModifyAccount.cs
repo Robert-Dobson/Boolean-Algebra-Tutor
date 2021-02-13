@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using TMPro;
 using UnityEngine;
-using System;
 using UnityEngine.SceneManagement;
 
 public class ModifyAccount : MonoBehaviour
@@ -50,7 +48,7 @@ public class ModifyAccount : MonoBehaviour
         }
 
         // If username is already in the Accounts Table in the database tell user username is already used
-        else if (DBManager.UserExists(username) && !(username == UserManager.userName)) 
+        else if (DBManager.UserExists(username) && !(username == UserManager.userName))
         {
             validationError = true;
             //Show username error message that username is already used
@@ -91,7 +89,7 @@ public class ModifyAccount : MonoBehaviour
             //Display to user a 5s modification successful message
             successMessage.GetComponent<TextMeshProUGUI>().enabled = true;
             Invoke("HideSuccessMessage", 5f);
-            
+
         }
     }
 
@@ -103,7 +101,7 @@ public class ModifyAccount : MonoBehaviour
     public void ToSwitchboard()
     {
         //Load Switchboard
-        SceneManager.LoadScene("Switchboard"); 
+        SceneManager.LoadScene("Switchboard");
     }
 
     public void ToReset()

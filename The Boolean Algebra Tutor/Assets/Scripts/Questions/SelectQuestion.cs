@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class SelectQuestion : MonoBehaviour
 {
     public GameObject questionPrefab;
-    
+
     void Start()
     {
         Populate();
@@ -26,7 +24,7 @@ public class SelectQuestion : MonoBehaviour
         {
             //Get users most recent score on the question or "-1" if not answered
             string score = DBManager.GetQuestionScore(UserManager.accountID, aQuestion.Item1);
-            
+
             //If the user hasn't attempted the question yet add the question to the list
             if (score == "-1")
             {
@@ -41,11 +39,11 @@ public class SelectQuestion : MonoBehaviour
             {
                 completedQuestions.Add(Tuple.Create<int, string, string, int, string, string, string>(aQuestion.Item1, aQuestion.Item2, aQuestion.Item3, aQuestion.Item4, aQuestion.Item5, aQuestion.Item6, score));
 
-            }    
+            }
         }
 
         //Add any completed questions at the bottom of the list
-        foreach (Tuple<int,string,string,int,string,string,string> completedQuestion in completedQuestions)
+        foreach (Tuple<int, string, string, int, string, string, string> completedQuestion in completedQuestions)
         {
             //Instantiate the question prefab (the element in the grid)
             GameObject newQuestion = Instantiate(questionPrefab, transform);
@@ -55,7 +53,7 @@ public class SelectQuestion : MonoBehaviour
         }
     }
 
-   
+
 }
 
 

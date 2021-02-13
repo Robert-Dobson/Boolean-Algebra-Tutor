@@ -35,6 +35,6 @@ public class InputNode : MonoBehaviour
         {
             connectedNode.GetComponent<OutputNode>().DestroyWire();
         }
-        
+
     }
 }

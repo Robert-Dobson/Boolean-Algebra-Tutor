@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class XORGate : LogicGate
+﻿public class XORGate : LogicGate
 {
     public override void OnChange()
     {

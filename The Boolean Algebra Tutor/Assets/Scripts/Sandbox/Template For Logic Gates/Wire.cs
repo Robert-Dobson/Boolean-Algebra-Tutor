@@ -10,9 +10,9 @@ public class Wire : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // If collided with an input node and wire not fixed and the input node is not connected to another wire.
-        if (fixedWire == false && collision.gameObject.CompareTag("InputNode") && collision.gameObject.GetComponent<InputNode>().isFixed == false) 
+        if (fixedWire == false && collision.gameObject.CompareTag("InputNode") && collision.gameObject.GetComponent<InputNode>().isFixed == false)
         {
-            connectedNode = collision.gameObject; 
+            connectedNode = collision.gameObject;
             if (connectedNode.transform.parent.gameObject != outputNode.transform.parent.gameObject) //If input node is not its own logic gate input node
             {
                 if (state == true) //If wire is logically true then call OnTrue() on connected input node 
@@ -32,14 +32,14 @@ public class Wire : MonoBehaviour
                 //Add reference to the output node to the input node so it can alert the output node if it's about to be deleted
                 connectedNode.GetComponent<InputNode>().connectedNode = outputNode;
 
-            }  
+            }
         }
     }
 
 
     private void Update()
     {
-        
+
         // If the wire is connected to another input node then make the wire always visually connect them 
         if (fixedWire)
         {
@@ -77,7 +77,7 @@ public class Wire : MonoBehaviour
 
         //Remove references to the output node and also set fixed wire to false and call OnFals on the connected input node 
         if (connectedNode != null)
-        {     
+        {
             connectedNode.GetComponent<InputNode>().isFixed = false;
             connectedNode.GetComponent<InputNode>().OnFalse();
             connectedNode.GetComponent<InputNode>().connectedNode = null;

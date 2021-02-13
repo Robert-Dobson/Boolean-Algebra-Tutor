@@ -1,11 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
-using System;
 using System.Security.Cryptography;
 using System.Text;
-using UnityEngine.Video;
 using System.Text.RegularExpressions;
-using System.Collections.Generic;
+using UnityEngine;
 
 public class DBManager : MonoBehaviour
 {
@@ -24,9 +23,9 @@ public class DBManager : MonoBehaviour
     static public int CheckCredentials(string username, string password)
     {
         //Create SQL command to fetch any account ID which has the entered username and password.
-        SQLiteDataReader dbDataReader;  
+        SQLiteDataReader dbDataReader;
         databaseCMD = databaseConnection.CreateCommand();
-        databaseCMD.CommandText = 
+        databaseCMD.CommandText =
         @"
             SELECT AccountID 
             FROM Accounts 
@@ -36,7 +35,7 @@ public class DBManager : MonoBehaviour
         databaseCMD.Parameters.AddWithValue("$username", username);
         databaseCMD.Parameters.AddWithValue("$password", password);
         int AccountID = -1; //Default -1 for when no records are found.
-       
+
         //Open Database connection and execute the SQL command then close the connection
         databaseConnection.Open();
         dbDataReader = databaseCMD.ExecuteReader();
@@ -60,10 +59,10 @@ public class DBManager : MonoBehaviour
             FROM Accounts
             WHERE AccountID = $accountID
         ";
-        
+
         //Add the provided account id as the accountID parameter (to protect against SQL injection)
         databaseCMD.Parameters.AddWithValue("$accountID", accountID);
-        
+
         //Declare the username, firstname and last name variables and give default values
         string username = "";
         string firstName = "";
@@ -81,7 +80,7 @@ public class DBManager : MonoBehaviour
         dbDataReader.Close();
         databaseConnection.Close();
 
-        Tuple<int, string, string, string> userDetails = Tuple.Create<int, string, string, string>(accountID,username,firstName,lastName);
+        Tuple<int, string, string, string> userDetails = Tuple.Create<int, string, string, string>(accountID, username, firstName, lastName);
         return userDetails;
     }
 
@@ -108,9 +107,9 @@ public class DBManager : MonoBehaviour
     {
         //Regex pattern that checks is password is 8 characters long, contain both upper and lower case letters, numbers and special characters. 
         string validationPattern = @"((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!-/]|.*[:-@]|.*[\[-`]|.*[\{-~]).{8,})";
-        
+
         //If password matches this regex pattern then return true (password is secure) else return false
-        if(Regex.Match(password, validationPattern).Success)
+        if (Regex.Match(password, validationPattern).Success)
         {
             return true;
         }
@@ -118,7 +117,7 @@ public class DBManager : MonoBehaviour
         {
             return false;
         }
-        
+
 
     }
 
@@ -139,7 +138,7 @@ public class DBManager : MonoBehaviour
         databaseCMD.Parameters.AddWithValue("$password", password);
         databaseCMD.Parameters.AddWithValue("$firstName", firstName);
         databaseCMD.Parameters.AddWithValue("$lastName", lastName);
-        
+
         //Open database connection, execute command then close it
         databaseConnection.Open();
         databaseCMD.ExecuteNonQuery();
@@ -268,7 +267,7 @@ public class DBManager : MonoBehaviour
         databaseConnection.Close();
     }
 
-    public static List<Tuple<int, string, string, int, string, string>> GetQuestions() 
+    public static List<Tuple<int, string, string, int, string, string>> GetQuestions()
     {
         //Create SQL command to get all questions in Questions table.
         SQLiteDataReader dbDataReader;
@@ -294,7 +293,7 @@ public class DBManager : MonoBehaviour
             int difficulty = Convert.ToInt32(dbDataReader["Difficulty"]);
             string question = Convert.ToString(dbDataReader["Question"]);
             string answer = Convert.ToString(dbDataReader["Answer"]);
-            questions.Add(Tuple.Create<int, string, string, int, string, string> (QuestionID, name, description, difficulty, question, answer));
+            questions.Add(Tuple.Create<int, string, string, int, string, string>(QuestionID, name, description, difficulty, question, answer));
         }
 
         //Close data reader and database connection and return list of questions

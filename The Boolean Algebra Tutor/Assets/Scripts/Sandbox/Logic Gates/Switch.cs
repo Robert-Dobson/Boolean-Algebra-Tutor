@@ -1,5 +1,4 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +17,7 @@ public class Switch : MonoBehaviour
 
     //Reference to error message for too many switches
     public GameObject errorMessage;
-   
+
     public void OnTrue()
     {
         GetComponent<SpriteRenderer>().color = Color.green; //Change sprite to green
@@ -60,7 +59,7 @@ public class Switch : MonoBehaviour
     {
         errorMessage = GameObject.FindWithTag("ErrorMessage"); //Get reference to error message game object
         numOfSwitches += 1; //Increment number of switches (static variable)
-        if(numOfSwitches == 1) //If first switch make it switch A
+        if (numOfSwitches == 1) //If first switch make it switch A
         {
             letter = "A";
             GetComponent<SpriteRenderer>().sprite = spriteA;
@@ -88,7 +87,7 @@ public class Switch : MonoBehaviour
             Invoke("StopErrorMessage", 5f);
         }
 
-        
+
 
 
         //Call OnFalse on first initialization to fix white logic gates bug

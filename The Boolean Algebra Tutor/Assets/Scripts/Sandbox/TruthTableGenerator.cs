@@ -2,8 +2,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class TruthTableGenerator : MonoBehaviour
 {
@@ -40,7 +38,7 @@ public class TruthTableGenerator : MonoBehaviour
 
         //Reset information text so then error messages do not persist
         truthTableString.GetComponent<TextMeshProUGUI>().text = "";
-        
+
         //Validation
         if (bulb.Length != 1) //Truth table only supports 1 bulb 
         {
@@ -76,19 +74,19 @@ public class TruthTableGenerator : MonoBehaviour
             }
 
             //Store an array representing all the orignal states of the switches so then we can keep their values
-            bool[] switchesStates = new bool [switches.Length];
-            for (int i=0; i < switches.Length; i++)
+            bool[] switchesStates = new bool[switches.Length];
+            for (int i = 0; i < switches.Length; i++)
             {
                 switchesStates[i] = switches[i].GetComponent<Switch>().state;
             }
 
 
-            for (int i=0; i < Math.Pow(2, switches.Length) ; i++)
+            for (int i = 0; i < Math.Pow(2, switches.Length); i++)
             {
                 //Loop through every combination of inputs
                 string countString = Convert.ToString(i, 2); //Adds up in binary so then every possible set of inputs is covered (logic gates work in binary)
                 countString = countString.PadLeft(switches.Length, '0'); //Adds leading 0's so string is always switches.length long (represents each input)
-                for (int j=0; j < switches.Length; j++)
+                for (int j = 0; j < switches.Length; j++)
                 {
                     //Access each input, gets the character in countString which represents the input's state and sets state appropriately
                     char state = countString[j];
@@ -146,7 +144,7 @@ public class TruthTableGenerator : MonoBehaviour
             }
 
             //If on answer question instead call the show confirmation method on the Question class.
-            else if(SceneManager.GetActiveScene().name == "Answer Question")
+            else if (SceneManager.GetActiveScene().name == "Answer Question")
             {
                 questionManager.GetComponent<Question>().Confirm(truthTable);
             }
@@ -158,7 +156,7 @@ public class TruthTableGenerator : MonoBehaviour
     public void FillTruthTable2()
     {
         truthTable2.SetActive(true);
-        for (int i=0; i < truthTable.Length; i++)
+        for (int i = 0; i < truthTable.Length; i++)
         {
             text2[i].GetComponent<TextMeshProUGUI>().text = Convert.ToString(truthTable[i]);
         }
@@ -167,7 +165,7 @@ public class TruthTableGenerator : MonoBehaviour
     public void FillTruthTable3()
     {
         truthTable3.SetActive(true);
-        for (int i=0; i< truthTable.Length; i++)
+        for (int i = 0; i < truthTable.Length; i++)
         {
             text3[i].GetComponent<TextMeshProUGUI>().text = Convert.ToString(truthTable[i]);
         }

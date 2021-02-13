@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TMPro;
 using UnityEngine;
-using TMPro;
 using UnityEngine.SceneManagement;
 
 public class ResetPassword : MonoBehaviour
@@ -29,17 +27,17 @@ public class ResetPassword : MonoBehaviour
             passwordErrorMessage.GetComponent<TextMeshProUGUI>().text = "Passwords do not Match!";
             passwordErrorMessage.GetComponent<TextMeshProUGUI>().enabled = true;
         }
-        else if (password1 == "") 
+        else if (password1 == "")
         {
             //Show error message for user to enter password then stop
             passwordErrorMessage.GetComponent<TextMeshProUGUI>().text = "You must enter a password!";
             passwordErrorMessage.GetComponent<TextMeshProUGUI>().enabled = true;
-            
+
         }
 
         //If password does not fit the security validation (detialed in method)
         else if (!(DBManager.CheckPasswordStrength(password1)))
-        { 
+        {
             //Show password is insecure enough error message
             passwordErrorMessage.GetComponent<TextMeshProUGUI>().text = "Password is insecure!";
             passwordErrorMessage.GetComponent<TextMeshProUGUI>().enabled = true;
@@ -50,7 +48,7 @@ public class ResetPassword : MonoBehaviour
             string password = DBManager.Sha256(password1);
 
             //Change the password in record to new password by calling method in DBManager
-            DBManager.ResetPassword(UserManager.accountID,password);
+            DBManager.ResetPassword(UserManager.accountID, password);
 
             //Show success message
             passwordSuccessMessage.GetComponent<TextMeshProUGUI>().enabled = true;

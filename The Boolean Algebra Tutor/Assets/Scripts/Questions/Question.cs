@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.XR.WSA;
 
 public class Question : MonoBehaviour
 {
@@ -21,12 +18,12 @@ public class Question : MonoBehaviour
     public GameObject resultPopUp;
     public GameObject questionLabel;
     public GameObject scoreLabel;
-    
+
     public void Start()
     {
         //Change question label to the question selected.
         questionLabel.GetComponent<TextMeshProUGUI>().text = question;
-        
+
     }
 
     public void Confirm(string truthTable)
@@ -40,7 +37,7 @@ public class Question : MonoBehaviour
     {
         //Work out the score by adding 1 to the score for each number the same in truth table string
         int score = 0;
-        for(int i=0; i <answer.Length; i++)
+        for (int i = 0; i < answer.Length; i++)
         {
             //Try catch clause in case the user answer is smaller than the actual answer truth
             // table string if they didn't use enough switches 
@@ -53,13 +50,13 @@ public class Question : MonoBehaviour
             }
             catch
             {
-                
+
             }
-            
+
         }
 
         //Show the score on the scorelabel and show the result pop up menu
-        scoreLabel.GetComponent<TextMeshProUGUI>().text = "You Scored " + Convert.ToString(score) + "/"+Convert.ToString(answer.Length);
+        scoreLabel.GetComponent<TextMeshProUGUI>().text = "You Scored " + Convert.ToString(score) + "/" + Convert.ToString(answer.Length);
         resultPopUp.SetActive(true);
 
         //Store Question Score in the QuestionScores table.

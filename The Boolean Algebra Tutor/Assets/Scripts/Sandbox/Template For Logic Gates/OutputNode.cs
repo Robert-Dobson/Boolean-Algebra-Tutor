@@ -43,8 +43,8 @@ public class OutputNode : MonoBehaviour
             //as the starting coordinate and minus the world coordinates of the input node from the mouse position in order to get the local coordinates
             //equivalent of the mouse position. Also, I have scaled the mouse position coordinates by a factor in 4 in order to nullify the bug where the
             //edge collider is a quarter of the intended size.
-            vectors[0] = new UnityEngine.Vector2 (0f, 0f); 
-            vectors[1] = new UnityEngine.Vector2(4*(mousePosition.x - outputNodePosition.x), 4*(mousePosition.y - outputNodePosition.y)); 
+            vectors[0] = new UnityEngine.Vector2(0f, 0f);
+            vectors[1] = new UnityEngine.Vector2(4 * (mousePosition.x - outputNodePosition.x), 4 * (mousePosition.y - outputNodePosition.y));
             edgeCollider.points = vectors; //Set start and end coordinates as the output node positon and the mouse.
         }
     }
@@ -54,7 +54,7 @@ public class OutputNode : MonoBehaviour
         if (!fixedWire)
         {
             // Make wire invisible and have no collider after letting go of the mouse
-            wire.GetComponent<LineRenderer>().enabled = false; 
+            wire.GetComponent<LineRenderer>().enabled = false;
             wire.GetComponent<EdgeCollider2D>().enabled = false;
         }
     }

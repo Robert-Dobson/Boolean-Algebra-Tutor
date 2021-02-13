@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 public class CreateQuestion : MonoBehaviour
@@ -114,7 +112,7 @@ public class CreateQuestion : MonoBehaviour
         {
             confirmationPopUp.SetActive(true);
         }
-       
+
     }
 
     public void Submit()

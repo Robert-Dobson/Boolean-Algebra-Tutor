@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System;
+﻿using System;
 
 using TMPro;
 using UnityEngine;
@@ -23,10 +21,10 @@ public class LoginManager : MonoBehaviour
 
         //Convert entered Password to hash for comparision in database
         enteredPassword = DBManager.Sha256(enteredPassword);
-        
+
         //Get the associated accountID for these entered credentials (or -1 if the credentials is incorrect)
         int accountID = DBManager.CheckCredentials(enteredUsername, enteredPassword);
-        
+
         // If correct credentials then call CorrectCredentials() else call IncorrectCredentials()
         if (accountID != -1)
         {
@@ -39,12 +37,12 @@ public class LoginManager : MonoBehaviour
 
     }
 
-    
+
 
     public void CorrectCredentials(int accountID)
     {
         //Get user details from database and update the UserManager class
-        Tuple<int, string, string, string> userDetails= DBManager.GetUserDetails(accountID);
+        Tuple<int, string, string, string> userDetails = DBManager.GetUserDetails(accountID);
         UserManager.UpdateUser(userDetails);
 
         //Redirect to switchboard
