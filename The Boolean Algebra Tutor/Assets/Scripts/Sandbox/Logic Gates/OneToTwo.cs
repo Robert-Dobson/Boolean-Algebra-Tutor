@@ -33,4 +33,30 @@ public class OneToTwo : LogicGate
         }
     }
 
+    public override void OnMouseOver()
+    {
+        if (Input.GetKeyDown("d")) //If user presses d whilst hovering over the logic gate destroy it
+        {
+            // Remove any references to the game object by calling destroy on the input nodes.
+
+            foreach (GameObject node in outputNodes)
+            {
+                if (node != null)
+                {
+                    
+                    node.GetComponent<OutputNode>().DestroyWire();
+                }
+
+            }
+
+            if (inputNode != null)
+            {
+                inputNode.GetComponent<InputNode>().Destroy();
+            }
+
+
+            Destroy(gameObject);
+        }
+    }
+
 }

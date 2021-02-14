@@ -30,7 +30,7 @@ public class LogicGate : MonoBehaviour
         OnFalse();
     }
 
-    public void OnMouseOver()
+    public virtual void OnMouseOver()
     {
         if (Input.GetKeyDown("d")) //If user presses d whilst hovering over the logic gate destroy it
         {
